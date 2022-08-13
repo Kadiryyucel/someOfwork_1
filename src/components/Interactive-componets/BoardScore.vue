@@ -1,61 +1,56 @@
 <template>
-  <div>
+  <div class="board-wrapper">
     <div class="content-wrapper">
       <div class="close-btn"></div>
-      <div class="plus" @click="add">
-        <b-icon icon="plus" font-scale="0.75"></b-icon>
-      </div>
-      <div class="board">{{ boardValue }}</div>
-      <div class="minus" @click="minus">
-        <b-icon icon="dash" font-scale="0.75"></b-icon>
-      </div>
+      <b-form-spinbutton class="board-score" v-model="select" min="0" max="8"></b-form-spinbutton>
     </div>
   </div>
 </template>
 
 <script>
+import personByData from "@/storage/Worker";
+
 export default {
   props: {
     value: {
       default: 0
-    }
-  },
-
-  methods: {
-    add() {
-      setTimeout(() => {
-            if (this.boardValue == 8) return
-            this.boardValue += 1;
-            console.log(this.boardValue)
-            this.$emit("addHour", this.boardValue)
-          },
-          500)
     },
-    minus() {
-      setTimeout(() => {
-            if (this.boardValue == 0) return
-            this.boardValue -= 1;
-            console.log(this.boardValue)
-            this.$emit("minusHour", this.boardValue)
-          },
-          500)
-    }
+    index:{default: 0},
+    field: {default:""},
+    list:{default:[]},
+  },
+  methods:{
+    updateWorkerHour() {
+      let date = this.field.date;
+      let personId = this.list[this.index].personalId;
+      let value = this.select;
+      console.log({date:date,personId:personId,value:value+1})
+      personByData.updateWorkerHour({id: personId, date: date, value: value+1})
+    },
   },
   computed: {
-    boardValue: {
+    select: {
       get() {
         return this.value
       },
-      set(newVal) {
-        this.$emit("input", newVal)
+      set(value) {
+        this.updateWorkerHour()
+        this.$emit("input", value);
+        this.$emit("changeDays",this.index)
       }
     }
   },
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
+.board-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .content-wrapper {
   display: flex;
   justify-content: center;
@@ -68,21 +63,32 @@ export default {
   }
 }
 
-.board {
-  background: #CA444A;
-  color:white;
-  padding: 0 4px !important;
-}
-
-.close-btn{
+.close-btn {
   content: "";
   position: absolute;
-  right:0px;
-  top:-8px;
+  right: 0px;
+  top: -8px;
   width: 8px;
-  height:8px;
+  height: 8px;
   background-size: cover;
-  background-image: url('../assets/arrow.png');
+  background-image: url('../../assets/arrow.png');
+}
+
+.b-form-spinbutton .btn{
+  font-size: 12px !important;
+  padding: 0 2px !important;
+}
+.b-form-spinbutton output > bdi{
+  height: auto !important;
+  min-width: 20px !important;
+  background: red !important;
+  color:white !important;
+}
+.b-form-spinbutton output{
+  padding: 0px !important;
+}
+.disable-weekend{
+  pointer-events: none!important;
 }
 
 </style>

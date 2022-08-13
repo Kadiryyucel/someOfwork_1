@@ -12,7 +12,7 @@ export default {}
 
 <style lang="scss">
 .person-bc {
-  background-color: gray;
+  background-color: #F5F6F8;
   border-radius: 100%;
   margin-right: 12px;
 }
