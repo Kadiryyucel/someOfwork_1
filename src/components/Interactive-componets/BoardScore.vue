@@ -20,12 +20,11 @@ export default {
     list:{default:[]},
   },
   methods:{
-    updateWorkerHour() {
+    updateWorkerHour(value) {
       let date = this.field.date;
       let personId = this.list[this.index].personalId;
-      let value = this.select;
-      console.log({date:date,personId:personId,value:value+1})
-      personByData.updateWorkerHour({id: personId, date: date, value: value+1})
+      console.log(value)
+      personByData.updateWorkerHour({id: personId, date: date, value: value})
     },
   },
   computed: {
@@ -34,7 +33,8 @@ export default {
         return this.value
       },
       set(value) {
-        this.updateWorkerHour()
+        console.log(value)
+        this.updateWorkerHour(value)
         this.$emit("input", value);
         this.$emit("changeDays",this.index)
       }

@@ -202,6 +202,7 @@ function updateWorkerHour({id, date, value}) {
 }
 
 function someDateOfWorker(people, index, date, value) {
+
     let indexSomeDate = people[index].workDays.findIndex(workDay => workDay.day == date)
     if (indexSomeDate != -1) people[index].workDays[indexSomeDate] = {day: date, value: value}
     setDataPerson(people)

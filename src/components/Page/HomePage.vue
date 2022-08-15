@@ -3,7 +3,7 @@
     <div class="container">
       <header-page></header-page>
       <data-table-header :fullDate.sync="fullDate"></data-table-header>
-      <data-table-list :fields="fields" :list.sync="items" @changeDay="workingDays"></data-table-list>
+      <data-table-list :fields="fields" :list="items" @changeDay="workingDays"></data-table-list>
       <b-col sm="12">
         <div class="excel-btn-area">
           <excel-btn @dowloand="_dowloand"></excel-btn>
@@ -120,16 +120,15 @@ export default {
       let el = document.getElementById("table-excel")
       var wb = XLSX.utils.table_to_book(el, {sheet: "sheet1"});
       return XLSX.writeFile(wb, "excelMonth.xlsx")
-    }, workingDays(index,value) {
+    },
+    workingDays(index,value) {
       let currentValue = this.items[index].workingHours = value
       this.items[index].workingDays = (currentValue / 8).toFixed(1);
-      console.log({h: currentValue, d: this.items[index].workingDays})
       this.notComeDays(index);
     },
     notComeDays(index) {
       let currentValue = this.items[index].workingDays
       this.items[index].notComeDay = 8 - currentValue;
-      console.log(this.items[index].notComeDay)
     },
     configTable(field, worker) {
       if (field.key == "user") {
